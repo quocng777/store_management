@@ -10,7 +10,7 @@ const sendVerificationCode = async(to, token) => {
             ...mailOptions,
             to,
             subject: 'Confirm your account',
-            html: `This is your confirm toke: ${code}`,
+            html: `This is your confirm toke: ${token}`,
         })
     } catch(err) {
         console.log(err);

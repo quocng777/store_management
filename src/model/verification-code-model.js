@@ -12,11 +12,11 @@ const VerificationCode = new EntitySchema({
             type: "varchar"
         },
         expire: {
-            type: "date"
+            type: "timestamp"
         }
     }, 
     relations: {
-        address: {
+        user: {
             target: "User",
             type: "one-to-one",
             joinColumn: {name: "user_id"},

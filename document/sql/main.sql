@@ -6,9 +6,8 @@ CREATE TABLE "user" (
     email VARCHAR(50) UNIQUE,
     birth_date TIMESTAMP,
     avatar VARCHAR(200),
-    gender BIT,
-    business_id VARCHAR(50),
-    verified BIT,
+    gender BOOLEAN,
+    verified BOOLEAN,
     address_id BIGINT,
     password VARCHAR(300)
 );
@@ -18,7 +17,7 @@ CREATE TABLE "user" (
 DROP TABLE IF EXISTS "address" CASCADE;
 CREATE TABLE "address" (
     id BIGSERIAL PRIMARY KEY,
-    houseNumber INTEGER,
+    house_number INTEGER,
     ward VARCHAR(50),
     district VARCHAR(50),
     city VARCHAR(50)
@@ -73,7 +72,7 @@ CREATE TABLE "verification_code" (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL,
     token VARCHAR(24) NOT NULL,
-    expireDate TIMESTAMP
+    expire TIMESTAMP
 );
 
 

@@ -3,8 +3,12 @@ const bcrypt = require('bcrypt');
 const ResponseDTO = require('../dto/response-dto');
 const InvalidParamsException = require('../exception/invalid-params-exception');
 const dataSource = require('../config/db');
+const verificationService = require('./verification-service');
+const mailService = require('./mail-service');
+const Address = require('../model/address-model');
 
 const userRepository = dataSource.getRepository(User);
+const addressRepo = dataSource.getRepository(Address);
 
 const register = async (user) => {
 
@@ -17,15 +21,26 @@ const register = async (user) => {
         throw new InvalidParamsException(`${user.phone} is used by other user`);
     }
 
+    if(user.address) {
+        const address = await addressRepo.save(user.address);
+        user.address = address;
+    }
+
+    user.verified = false;
     user.password = await bcrypt.hash(user.password, 10);
 
     const savedUser = await userRepository.save(user);
+
+    const token = await verificationService.createVerificationToken(savedUser.id);
+
+    mailService.sendVerificationCode(savedUser.email, token);
 
     return ResponseDTO.success(
         {
             name: savedUser.name,
             email: savedUser.email,
-            phone: savedUser.phone
+            phone: savedUser.phone,
+            verified: savedUser.verified
         }
     );
 };
