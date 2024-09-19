@@ -2,8 +2,8 @@ DROP TABLE IF EXISTS "user" CASCADE;
 CREATE TABLE "user" (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
-    phone VARCHAR(10) NOT NULL,
-    email VARCHAR(50),
+    phone VARCHAR(10) NOT NULL UNIQUE,
+    email VARCHAR(50) UNIQUE,
     birth_date TIMESTAMP,
     avatar VARCHAR(200),
     gender BIT,

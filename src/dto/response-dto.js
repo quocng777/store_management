@@ -18,6 +18,18 @@ class ResponseDTO {
     static created(data) {
         return new ResponseDTO(data, httpStatus['201_NAME'], httpStatus[201])
     }
+
+    static notfound(message) {
+        return new ResponseDTO(null, message, 404);
+    }
+
+    static serverError() {
+        return new ResponseDTO(null, httpStatus['500_MESSAGE'], 500);
+    }
+
+    static badRequest(message) {
+        return new ResponseDTO(null, message, 400);
+    }
 }
 
 module.exports = ResponseDTO;
