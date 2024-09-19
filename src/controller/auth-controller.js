@@ -1,5 +1,7 @@
 const userService = require('../service/auth-service');
 
+const SESSION_EXPIRE = Number.parseInt(process.env.SESSION_EXPIRE);
+
 const register = async (req, res, next) => {
     try {
         let {
@@ -24,6 +26,18 @@ const register = async (req, res, next) => {
     }
 };
 
+const login = (req, res, next) => {
+    req.session.cookie.maxAge = SESSION_EXPIRE;
+    req.session.cookie.expire = new Date(Date.now() + SESSION_EXPIRE);
+
+    return res.status(200).json({
+        user: {
+            id: req.user.id,
+        }
+    });
+}
+
 module.exports = {
     register,
+    login
 }
