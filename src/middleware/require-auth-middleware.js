@@ -1,6 +1,6 @@
 const requireAuth = (req, res, next) => {
     if(req.isAuthenticated) {
-        next();
+        return next();
     }
     return res.status(403).json({
         code: '401',
