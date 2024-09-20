@@ -42,18 +42,9 @@ CREATE TABLE "relationship" (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT,
     store_id BIGINT,
-    role_id BIGINT,
+    role VARCHAR(20),
     start_date TIMESTAMP,
     end_date TIMESTAMP
-);
-
--- role table scheme
-
-DROP TABLE IF EXISTS "role" CASCADE;
-CREATE TABLE "role" (
-    id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(50),
-    description VARCHAR(500)
 );
 
 -- request table scheme
@@ -85,21 +76,14 @@ ALTER TABLE "relationship" DROP CONSTRAINT IF EXISTS PK_relationship_user;
 ALTER TABLE "relationship"
 ADD CONSTRAINT PK_relationship_user
 FOREIGN KEY (user_id)
-REFERENCES "user"(id);
+REFERENCES "user"(id) ON DELETE CASCADE;
 
 
 ALTER TABLE "relationship" DROP CONSTRAINT IF EXISTS PK_relationship_store;
 ALTER TABLE "relationship"
 ADD CONSTRAINT PK_relationship_store
 FOREIGN KEY (store_id)
-REFERENCES store(id);
-
-ALTER TABLE "relationship" DROP CONSTRAINT IF EXISTS PK_relationship_role;
-ALTER TABLE "relationship"
-ADD CONSTRAINT 
-PK_relationship_role
-FOREIGN KEY (role_id)
-REFERENCES role(id);
+REFERENCES "store"(id) ON DELETE CASCADE;
 
 ALTER TABLE "request" DROP CONSTRAINT IF EXISTS PK_request_user;
 ALTER TABLE "request"

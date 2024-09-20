@@ -6,6 +6,7 @@ const router = require('./router');
 const errorHandlerMiddleware = require('./middleware/error-handler-middleware');
 const passport = require('./config/passport');
 const session = require('express-session');
+const path = require('path');
 
 const app = express();
 
@@ -14,7 +15,6 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: true
     }
 }));
 
@@ -26,11 +26,12 @@ app.use(express.urlencoded(
     {extended: false}
 ));
 
-app.use('/', router);
+app.use('/static', express.static(path.join(__dirname, 'uploads')));
+
+app.use('/api/v1/', router);
 
 // handle global error
 app.use(errorHandlerMiddleware);
-
 
 const PORT = process.env.APP_PORT || 8080;
 

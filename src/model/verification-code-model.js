@@ -6,7 +6,8 @@ const VerificationCode = new EntitySchema({
     columns: {
         id: {
             type: "bigint",
-            primary: true
+            primary: true,
+            generated: true,
         },
         token: {
             type: "varchar"

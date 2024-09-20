@@ -1,4 +1,5 @@
 const dataSource = require("../config/db");
+const NotFoundException = require("../exception/notfound-exception");
 const User = require("../model/user-model");
 const VerificationCode = require("../model/verification-code-model")
 
@@ -44,6 +45,25 @@ const createVerificationToken = async (userId) => {
        return token;
 };
 
+const verifyUser = async(userId, token) => {
+    const code = verificationCodeRepo
+    .createQueryBuilder()
+    .where('user_id = :userId', { userId })
+    .getOne();
+
+    if(!code) 
+        throw new NotFoundException('Not found token');
+
+    if(code === token && (new Date().getTime() > code.expire.getTime())) {
+        await verificationCodeRepo.delete(code);
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
 module.exports = {
     createVerificationToken,
+    verifyUser,
 }

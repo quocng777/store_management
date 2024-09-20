@@ -6,6 +6,9 @@ const dataSource = require('../config/db');
 const verificationService = require('./verification-service');
 const mailService = require('./mail-service');
 const Address = require('../model/address-model');
+const NotFoundException = require('../exception/notfound-exception');
+const { In } = require('typeorm');
+const { use } = require('passport');
 
 const userRepository = dataSource.getRepository(User);
 const addressRepo = dataSource.getRepository(Address);
@@ -40,7 +43,9 @@ const register = async (user) => {
             name: savedUser.name,
             email: savedUser.email,
             phone: savedUser.phone,
-            verified: savedUser.verified
+            verified: savedUser.verified,
+            birthDate: savedUser.birthDate,
+            gender: savedUser.gender
         }
     );
 };
@@ -61,6 +66,31 @@ const findByPhone = async (phone) => {
     });
 }
 
+const verifyEmail = async(email, token) => {
+    const user = await userRepository
+        .findOne({where: {email: email.toLowerCase().trim()}});
+    if(!user) {
+        throw new NotFoundException('User not found');
+    } else if (user.verified) {
+        throw new InvalidParamsException("User verified");
+    }
+
+    if(verificationService.verifyUser(user.id, token)) {
+        userRepository.update({id: user.id}, {verified: true});
+
+        return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            verified: true,
+        }
+    } else {
+        throw new InvalidParamsException('Invalid token');
+    }
+
+}
+
 module.exports = {
-    register
+    register,
+    verifyEmail
 }

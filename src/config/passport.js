@@ -13,7 +13,7 @@ passport.use(new LocalStrategy({
             return done(null, false, 'Invalid credentials');
         }
 
-        const isValid = await bcrypt.compare(passport, user.password);
+        const isValid = await bcrypt.compare(password, user.password);
 
         if(isValid) {
             done(null, user);
@@ -22,8 +22,22 @@ passport.use(new LocalStrategy({
         }
 
     } catch(err) {
+        console.error(err);
         done(err);
     }
 }));
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await userService.getById(id);
+        done(null, user);
+    } catch (error) {
+        done(error);
+    }
+});
 
 module.exports = passport;

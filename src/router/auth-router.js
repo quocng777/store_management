@@ -6,4 +6,6 @@ router.post('/register', authController.register);
 
 router.post('/login', passport.authenticate('local'), authController.login);
 
+router.post('/verify-account', authController.verifyAccount);
+
 module.exports = router;

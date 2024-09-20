@@ -1,38 +1,24 @@
 const { EntitySchema } = require('typeorm');
 
-const User = new EntitySchema({
-    name: 'User',
-    tableName: 'user',
+const Store = new EntitySchema({
+    name: 'Store',
+    tableName: 'store',
     columns: {
         id: {
             type: "bigint",
             primary: true,
             generated: true,
         },
-        name: {
+        name:{
+            type: "varchar",
+        },
+        logo: {
             type: "varchar",
         },
         phone: {
             type: "varchar",
         },
         email: {
-            type: "varchar",
-            nullable: false,
-        },
-        birth_date: {
-            type: "date",
-            name: "birth_date"
-        },
-        avatar: {
-            type: "varchar"
-        },
-        gender: {
-            type: "boolean"
-        },
-        verified: {
-            type: "boolean"
-        },
-        password: {
             type: "varchar",
             nullable: false,
         }
@@ -46,4 +32,4 @@ const User = new EntitySchema({
     }
 });
 
-module.exports = User;
+module.exports = Store;

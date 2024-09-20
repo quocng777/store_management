@@ -12,6 +12,15 @@ const getUserByEmail = async(email) => {
     })
 };
 
+const getById = async(id) => {
+    return await userRepo.findOne({
+        where: {
+            id,
+        }
+    })
+}
+
 module.exports = {
-    getUserByEmail
+    getUserByEmail,
+    getById
 }

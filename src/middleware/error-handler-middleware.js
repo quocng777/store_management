@@ -13,7 +13,7 @@ const errorHandlerMiddleware = (err, request, response, next) => {
         )
     } else {
         response.status(500).json(
-            ResponseDTO.notfound()
+            ResponseDTO.serverError(err.message)
         );
     }
 }

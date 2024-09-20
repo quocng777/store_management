@@ -7,6 +7,7 @@ const Address = new EntitySchema({
         id: {
             type: "bigint",
             primary: true,
+            generated: true,
         },
         houseNumber: {
             type: "int",
